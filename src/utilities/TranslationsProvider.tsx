@@ -3,6 +3,7 @@ import * as translationsDE from '../translations/translations-de.json';
 import * as translationsEN from '../translations/translations-en.json';
 import { readRecord } from './localStorageService';
 import { darkTheme, lightTheme, ThemeProvider } from '../theme';
+import { ReactNode, useState } from 'react';
 
 export interface IAppContext {
   clockDisplay: string;
@@ -38,37 +39,32 @@ const context = React.createContext<IAppContext | any>(null);
 const AppContextProvider = context.Provider;
 export const AppContextConsumer = context.Consumer;
 
-export default class TranslationProvider extends React.Component<{children: any}> {
-  public state = {
-    translations: readRecord('lang') !== 'de' ? translationsEN : translationsDE,
-    colorTheme: readRecord('theme') !== 'dark' ? lightTheme : darkTheme
+const TranslationProvider: React.FC<{children: ReactNode}> = ({ children }) => {
+  const [translations, setTranslations] = useState(readRecord('lang') !== 'de' ? translationsEN : translationsDE)
+  const [colorTheme, setColorTheme] = useState(readRecord('theme') !== 'dark' ? lightTheme : darkTheme)
+
+  const changeTheme = () => {
+    setColorTheme(theme =>
+      theme === lightTheme ? darkTheme : lightTheme
+    );
   };
-
-  public render() {
-    const { colorTheme } = this.state;
-
-    return (
-      <AppContextProvider value={{
-        state: this.state,
-        changeLanguage: this.changeLanguage,
-        changeTheme: this.changeTheme,
-      }}>
-        <ThemeProvider theme={colorTheme}>
-          {this.props.children as any}
-        </ThemeProvider>
-      </AppContextProvider>
-    )
+  
+  const changeLanguage = () => {
+    setTranslations(translations =>
+      translations.langCode === 'DE' ? translationsEN : translationsDE
+    );
   }
 
-  private changeTheme = () => {
-    this.setState({
-      colorTheme: this.state.colorTheme === lightTheme ? darkTheme : lightTheme
-    });
-  };
-
-  private changeLanguage = () => {
-    this.setState({
-      translations: this.state.translations.langCode === 'DE' ? translationsEN : translationsDE
-    });
-  }
+  return (
+    <AppContextProvider value={{
+      state: {colorTheme, translations},
+      changeLanguage: changeLanguage,
+      changeTheme: changeTheme,
+    }}>
+      <ThemeProvider theme={colorTheme}>
+        {children}
+      </ThemeProvider>
+    </AppContextProvider>
+  )
 }
+export default TranslationProvider
