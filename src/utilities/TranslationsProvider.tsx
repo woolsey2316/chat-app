@@ -6,38 +6,85 @@ import { darkTheme, lightTheme, ThemeProvider } from '../theme';
 import { ReactNode, useState } from 'react';
 
 export interface IAppContext {
-  clockDisplay: string;
-  clockModes: {
-    hours12: string;
-    hours24: string;
-  },
-  colors: {
-    color1: string;
-    color2: string;
+  colorTheme: {
+    primaryLightColor: string;
+    secondaryLightColor: string;
+    primaryDarkColor: string;
+    secondaryDarkColor: string;
+    messageBackgroundColor: string; 
   };
-  interfaceColor: string;
-  langCode: string;
-  langLabel: string;
-  languageEN: string;
-  languageDE: string;
-  nav: {
-    chatTabLabel: string,
-    settingsTabLabel: string
-  };
-  resetButtonLabel: string;
-  userName: string;
-  ctrlEnterOptionsTitle: string;
-  ctrlEnterSendingOptions: {
-    option1: string;
-    option2: string;
+  translations: {
+    clockDisplay: string;
+    clockModes: {
+      hours12: string;
+      hours24: string;
+    },
+    colors: {
+      color1: string;
+      color2: string;
+    };
+    interfaceColor: string;
+    langCode: string;
+    langLabel: string;
+    languageEN: string;
+    languageDE: string;
+    nav: {
+      chatTabLabel: string,
+      settingsTabLabel: string
+    };
+    resetButtonLabel: string;
+    userName: string;
+    ctrlEnterOptionsTitle: string;
+    ctrlEnterSendingOptions: {
+      option1: string;
+      option2: string;
+    };
   }
   changeLanguage: () => void;
+  changeTheme: () => void;
 }
 
-const context = React.createContext<IAppContext | any>(null);
+export const AppContext = React.createContext<IAppContext>({
+  colorTheme: {
+    primaryLightColor: '',
+    secondaryLightColor: '',
+    primaryDarkColor: '',
+    secondaryDarkColor: '',
+    messageBackgroundColor: '',
+  },
+  translations: {
+    clockDisplay: "Clock Display",
+    clockModes: {
+      hours12: "12 Hours",
+      hours24: "24 Hours"
+    },
+    colors: {
+      color1: "Light",
+      color2: "Dark"
+    },
+    interfaceColor: "Interface Color",
+    langCode: "EN",
+    langLabel: "Language",
+    languageEN: "English",
+    languageDE: "Deutsch",
+    nav: {
+      chatTabLabel: "Chat",
+      settingsTabLabel: "Settings"
+    },
+    resetButtonLabel: "Reset",
+    ctrlEnterOptionsTitle: "Send messages on CTRL+ENTER",
+    ctrlEnterSendingOptions: {
+      option1: "On",
+      option2: "Off"
+    },
+    userName: "Username",
+  },
+  changeLanguage: () => {},
+  changeTheme: () => {},
+});
 
-const AppContextProvider = context.Provider;
-export const AppContextConsumer = context.Consumer;
+const AppContextProvider = AppContext.Provider;
+export const AppContextConsumer = AppContext.Consumer;
 
 const TranslationProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   const [translations, setTranslations] = useState(readRecord('lang') !== 'de' ? translationsEN : translationsDE)
@@ -57,7 +104,8 @@ const TranslationProvider: React.FC<{children: ReactNode}> = ({ children }) => {
 
   return (
     <AppContextProvider value={{
-      state: {colorTheme, translations},
+      colorTheme,
+      translations,
       changeLanguage: changeLanguage,
       changeTheme: changeTheme,
     }}>
