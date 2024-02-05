@@ -94,7 +94,7 @@ export const Navigation: React.FunctionComponent = () => {
 
   useEffect(() => {
     startBlinking();
-    () => dispatch(connectSocket())
+    dispatch(connectSocket())
   },[])
 
   return (
