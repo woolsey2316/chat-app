@@ -1,8 +1,7 @@
 import * as React from 'react';
-import ChatArea from '../../ChatArea';
-import MessageSender from '../../MessageSender';
+import ChatArea from '../../chatArea';
+import MessageSender from '../../messageSender';
 import styled from 'styled-components';
-import { AppContext } from 'src/utilities/TranslationsProvider';
 
 const StyledPageContainer = styled("section")`
   text-align: center;
@@ -13,7 +12,6 @@ const StyledPageContainer = styled("section")`
 `;
 
 const ChatPage: React.FunctionComponent = () => {
-  const appContext = React.useContext(AppContext)
   return (
     <StyledPageContainer>
       <ChatArea/>

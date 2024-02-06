@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Nickname from '../Nickname';
-import Timestamp from '../Timestamp';
+import Nickname from '../nickname/Nickname';
+import Timestamp from '../timestamp/Timestamp';
 import Linkify from 'linkifyjs/react';
 import getUrls from 'get-urls';
 import styled from 'styled-components';

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import Message from '../Message';
+import Message from '../message';
 import { scrollToBottom } from '../../utilities/common';
-import { IMessage } from '../Message/Message';
+import { IMessage } from '../message/Message';
 import { useAppSelector } from 'src/hooks/hooks';
 import styled from 'styled-components';
 
@@ -66,4 +65,4 @@ export const ChatArea: React.FunctionComponent = () => {
 }
 
 
-export default connect(mapStateToProps)(ChatArea);
+export default ChatArea;
