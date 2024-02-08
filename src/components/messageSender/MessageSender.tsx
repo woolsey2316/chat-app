@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { sendMessage } from '../../store/message/actions';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { readRecord } from '../../utilities/localStorageService';
 import { getTime12Hours, getTime24hours } from '../../utilities/common';
 import styled from 'styled-components';
+import { useAppDispatch } from 'src/hooks/hooks';
 
 const StyledMessageSender = styled("section")`
   position: fixed;
@@ -40,7 +39,7 @@ const KEY_CODES = {
 };
 
 export const MessageSender: React.FunctionComponent = () => {
-
+  const dispatch = useAppDispatch()
   const [username,] =  React.useState(readRecord('username') || 'guest0001');
   const [chatMessage, setChatMessage] =  React.useState('');
   const messagesInputRef = React.createRef<HTMLInputElement>();
@@ -99,7 +98,7 @@ export const MessageSender: React.FunctionComponent = () => {
   const sendChatMessage = (): void => {
     if (chatMessage !== '') {
       // @ts-ignore
-      props.sendMessage({ from: username, content: chatMessage, time: getTime() });
+      dispatch(sendMessage({ from: username, content: chatMessage, time: getTime() }));
     }
   };
 
